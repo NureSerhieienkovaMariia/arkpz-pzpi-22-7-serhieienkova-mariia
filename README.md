@@ -1,3 +1,3 @@
-Pzpi-22-7
+ПЗПІ-22-7
 
-Serhieienkova Maria
+Сергєєнкова Марія
