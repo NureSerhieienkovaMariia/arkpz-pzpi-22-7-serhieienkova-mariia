@@ -36,7 +36,7 @@
 
 ВИСНОВКИ
 Набуто навичок рефакторингу програмного коду, детально розглянуто основні правила оформлення коду. 
-Посилання на відео-презентацію 
+Посилання на відео-презентацію https://youtu.be/Z7H4OhY7RFM?feature=shared
 Посилання на GitHub репозиторій с кодом https://github.com/NureSerhieienkovaMariia/arkpz-pzpi-22-7-serhieienkova-mariia/blob/main/Pract1/arkpz-pzpi-22-7-serhieienkova-mariia-pract1/code-examples-pz1.swift
 
 ДОДАТОК А
