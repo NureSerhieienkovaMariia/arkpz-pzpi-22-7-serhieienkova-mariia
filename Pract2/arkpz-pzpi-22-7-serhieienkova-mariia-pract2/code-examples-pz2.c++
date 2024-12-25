@@ -6,7 +6,7 @@ using namespace std;
 
 class Employee {
 public:
-    string type;  // Тип працівника (менеджер, розробник, стажер)
+    string type; // Тип працівника (менеджер, розробник, стажер)
 
     Employee(string type) : type(type) {}
 
@@ -14,9 +14,11 @@ public:
     double calculateSalary(int hoursWorked) {
         if (type == "manager") {
             return hoursWorked * 50;
-        } else if (type == "developer") {
+        }
+        else if (type == "developer") {
             return hoursWorked * 40;
-        } else {
+        }
+        else {
             return hoursWorked * 30;
         }
     }
@@ -24,15 +26,18 @@ public:
 
 class Order {
 public:
-    vector<string> items;  // Список товарів у замовленні
-    bool isProcessed = false;  // Статус обробки замовлення
+    vector<string> items; // Список товарів у замовленні
+    bool isProcessed = false; // Статус обробки замовлення
 
     Order(vector<string> items) : items(items) {}
 
     // Обробка замовлення
     int processOrder() {
+        if (items.empty()) {
+            return -1; // Помилка: замовлення порожнє
+        }
         isProcessed = true;
-        return items.size();  // Повертаємо кількість товарів
+        return items.size();
     }
 };
 
@@ -45,9 +50,16 @@ int main() {
     cout << "Developer Salary: " << developer.calculateSalary(160) << endl;
     cout << "Intern Salary: " << intern.calculateSalary(160) << endl;
 
-    vector<string> items = {"item1", "item2", "item3"};
+    vector<string> items = {};
     Order order(items);
-    cout << "Order processed: " << order.processOrder() << " items." << endl;
+
+    int result = order.processOrder();
+    if (result == -1) {
+        cout << "Error: Order is empty!" << endl;
+    }
+    else {
+        cout << "Order processed: " << result << " items." << endl;
+    }
 
     return 0;
 }
@@ -58,6 +70,7 @@ int main() {
 #include <vector>
 #include <string>
 #include <memory>
+#include <stdexcept>
 using namespace std;
 
 // Стратегія для обчислення зарплати
@@ -67,7 +80,6 @@ public:
     virtual ~SalaryStrategy() = default;
 };
 
-// Стратегія для менеджера
 class ManagerSalaryStrategy : public SalaryStrategy {
 public:
     double calculate(int hoursWorked) const override {
@@ -75,7 +87,6 @@ public:
     }
 };
 
-// Стратегія для розробника
 class DeveloperSalaryStrategy : public SalaryStrategy {
 public:
     double calculate(int hoursWorked) const override {
@@ -83,7 +94,6 @@ public:
     }
 };
 
-// Стратегія для стажера
 class InternSalaryStrategy : public SalaryStrategy {
 public:
     double calculate(int hoursWorked) const override {
@@ -91,7 +101,6 @@ public:
     }
 };
 
-// Клас працівника
 class Employee {
 protected:
     shared_ptr<SalaryStrategy> salaryStrategy;
@@ -100,13 +109,17 @@ public:
     Employee(shared_ptr<SalaryStrategy> strategy)
         : salaryStrategy(strategy) {}
 
-    // Обчислення зарплати за допомогою стратегії
     double calculateSalary(int hoursWorked) {
         return salaryStrategy->calculate(hoursWorked);
     }
 };
 
-// Клас замовлення
+class EmptyOrderException : public runtime_error {
+public:
+    explicit EmptyOrderException(const string& message)
+        : runtime_error(message) {}
+};
+
 class Order {
 protected:
     vector<string> items;
@@ -116,12 +129,13 @@ public:
 
     Order(vector<string> items) : items(items) {}
 
-    // Обробка замовлення
     void processOrder() {
+        if (items.empty()) {
+            throw EmptyOrderException("Order cannot be empty!");
+        }
         isProcessed = true;
     }
 
-    // Отримання кількості товарів у замовленні
     int getItemCount() const {
         return items.size();
     }
@@ -137,12 +151,17 @@ int main() {
     cout << "Developer Salary: " << developer.calculateSalary(160) << endl;
     cout << "Intern Salary: " << intern.calculateSalary(160) << endl;
 
-    vector<string> items = {"item1", "item2", "item3"};
-    Order order(items);
+    try {
+        vector<string> items = {};
+        Order order(items);
 
-    // Обробка замовлення
-    order.processOrder();
-    cout << "Order processed: " << order.getItemCount() << " items." << endl;
+        // Спроба обробити замовлення
+        order.processOrder();
+        cout << "Order processed: " << order.getItemCount() << " items." << endl;
+    }
+    catch (const EmptyOrderException& e) {
+        cout << "Error: " << e.what() << endl;
+    }
 
     return 0;
 }
