@@ -22,11 +22,12 @@ type UserInfo struct {
 }
 
 type UpdateUserInput struct {
-	Name                  string `json:"name" binding:"required"`
-	Surname               string `json:"surname" binding:"required"`
-	PasswordHash          string `json:"password" db:"password_hash" binding:"required"`
-	Email                 string `json:"email" binding:"required"`
+	Name                  string `json:"name"`
+	Surname               string `json:"surname"`
+	PasswordHash          string `json:"password" db:"password_hash"`
+	Email                 string `json:"email"`
 	PremiumExpirationDate string `json:"premium_expiration_date" db:"premium_expiration_date"`
+	AccessLevelId         string `json:"access_level_id" db:"access_level_id"`
 }
 
 type UserToken struct {

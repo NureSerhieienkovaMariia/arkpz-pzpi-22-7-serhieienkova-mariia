@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"clinic/server/service"
 	"fmt"
 	"net/http"
 	"strconv"
@@ -58,13 +57,13 @@ func (h *Handler) getUserById(c *gin.Context) {
 func (h *Handler) getUserByEmail(c *gin.Context) {
 	email := c.Param("email")
 
-	rawAuthToken := readRawAuthToken(c)
+	//rawAuthToken := readRawAuthToken(c)
 
-	tokenClaims, err := service.ParseToken(rawAuthToken)
-	if err != nil {
-		newErrorResponse(c, http.StatusUnauthorized, err.Error())
-		return
-	}
+	//tokenClaims, err := service.ParseToken(rawAuthToken)
+	//if err != nil {
+	//	newErrorResponse(c, http.StatusUnauthorized, err.Error())
+	//	return
+	//}
 
 	user, err := h.services.UserAction.GetByEmail(email)
 	if err != nil {
@@ -72,10 +71,10 @@ func (h *Handler) getUserByEmail(c *gin.Context) {
 		return
 	}
 
-	if user.Id == tokenClaims.Id {
-		newErrorResponse(c, http.StatusBadRequest, "Cannot retrieve current user with this method")
-		return
-	}
+	//if user.Id == tokenClaims.Id {
+	//	newErrorResponse(c, http.StatusBadRequest, "Cannot retrieve current user with this method")
+	//	return
+	//}
 
 	c.JSON(http.StatusOK, user)
 }

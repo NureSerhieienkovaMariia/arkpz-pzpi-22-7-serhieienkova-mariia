@@ -15,7 +15,7 @@ func NewHandler(services *service.Service) *Handler {
 
 func (h *Handler) InitRoutes() *gin.Engine {
 	router := gin.New()
-	router.Use(CORSMiddleware())
+	//router.Use(CORSMiddleware())
 
 	auth := router.Group("/auth")
 	{
@@ -30,6 +30,11 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		users := api.Group("/user")
 		{
 			users.GET("/email/:email", h.getUserByEmail)
+			users.POST("/", h.createUser)
+			users.GET("/", h.getAllUsers)
+			users.GET("/:id", h.getUserById)
+			users.POST("/:id", h.updateUser)
+			users.DELETE("/:id", h.deleteUser)
 		}
 
 		patients := api.Group("/patient")

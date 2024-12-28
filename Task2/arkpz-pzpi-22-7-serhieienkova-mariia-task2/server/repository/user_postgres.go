@@ -98,6 +98,12 @@ func (r *UserActionPostgres) Update(userId int, input structures.UpdateUserInput
 		argId++
 	}
 
+	if input.AccessLevelId != "" {
+		setValues = append(setValues, fmt.Sprintf("access_level_id=$%d", argId))
+		args = append(args, input.AccessLevelId)
+		argId++
+	}
+
 	setQuery := strings.Join(setValues, ", ")
 
 	query := fmt.Sprintf("UPDATE %s SET %s WHERE id=$%d",
